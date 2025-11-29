@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { User, Book } from '@/types';
 import styles from './page.module.css';
+import LandingPage from '@/components/templates/LandingPage';
 
 export default function HomePage() {
     const router = useRouter();
@@ -12,6 +13,7 @@ export default function HomePage() {
     const [recommendations, setRecommendations] = useState<Book[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isRecLoading, setIsRecLoading] = useState(false);
+    const [showLanding, setShowLanding] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -22,11 +24,12 @@ export default function HomePage() {
             setUser(userRes.data.data);
             setRecommendations(recRes.data.data);
         } catch (err: any) {
-            if (err.response?.status !== 403 && err.response?.status !== 401) {
+            if (err.response?.status === 401 || err.response?.status === 403) {
+                localStorage.removeItem('accessToken');
+                setShowLanding(true);
+            } else {
                 console.error(err);
             }
-            localStorage.removeItem('accessToken');
-            router.push('/login');
         } finally {
             setIsLoading(false);
         }
@@ -35,7 +38,8 @@ export default function HomePage() {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         if (!token) {
-            router.push('/login');
+            setShowLanding(true);
+            setIsLoading(false);
             return;
         }
         fetchData();
@@ -54,6 +58,12 @@ export default function HomePage() {
     };
 
     if (isLoading) return <div className={styles.loading}>로딩 중...</div>;
+
+    // Show Landing Page if not authenticated
+    if (showLanding) {
+        return <LandingPage />;
+    }
+
     if (!user) return null;
 
     // Personality Type Logic
