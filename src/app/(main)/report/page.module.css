@@ -1,0 +1,336 @@
+/* Container & Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* Left Column: Book Info */
+.bookInfoSection {
+    flex: 0 0 320px;
+    position: sticky;
+    top: 100px;
+}
+
+.bookCard {
+    background: white;
+    padding: 32px;
+    border-radius: 24px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    border: 1px solid #E2E8F0;
+    text-align: center;
+}
+
+.thumbnail {
+    width: 160px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail:hover {
+    transform: translateY(-4px);
+}
+
+.bookTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    word-break: keep-all;
+}
+
+.bookAuthor {
+    color: #64748B;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.contextLabel {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #F1F5F9;
+    color: #94A3B8;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Right Column: Editor */
+.editorSection {
+    flex: 1;
+    min-width: 0;
+    /* Prevent flex overflow */
+}
+
+.editorCard {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0;
+    padding: 40px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+}
+
+.editorCard:focus-within {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    border-color: #CBD5E1;
+}
+
+.textarea {
+    width: 100%;
+    flex: 1;
+    border: none;
+    resize: none;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    color: #334155;
+    padding: 0;
+}
+
+.textarea::placeholder {
+    color: #94A3B8;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #F1F5F9;
+}
+
+.counter {
+    color: #94A3B8;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Loading Overlay */
+.loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.loadingContent {
+    text-align: center;
+}
+
+.spinner {
+    font-size: 3rem;
+    margin-bottom: 24px;
+    animation: spin 2s linear infinite;
+}
+
+.loadingTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 8px;
+}
+
+.loadingDesc {
+    color: #64748B;
+    font-size: 1.1rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Result View (Reusing styles from previous step, ensuring consistency) */
+.resultContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-color: #F8FAFC;
+}
+
+.resultCard {
+    width: 100%;
+    max-width: 600px;
+    padding: 48px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    border: 1px solid #E2E8F0;
+    text-align: center;
+}
+
+.resultTitle {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    color: #0F172A;
+    letter-spacing: -0.025em;
+}
+
+.resultBookInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.resultThumbnail {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.resultBookTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 6px;
+}
+
+.resultBookAuthor {
+    font-size: 1.1rem;
+    color: #64748B;
+}
+
+.analysisResult {
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.typeTag {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #F0F9FF;
+    color: #0284C7;
+    font-weight: 600;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+}
+
+.scores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.scoreItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background-color: #F8FAFC;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+}
+
+.scoreItem span:first-child {
+    font-size: 0.9rem;
+    color: #64748B;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.scoreItem span:last-child {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.feedbackBox {
+    background-color: #F8FAFC;
+    border-left: 4px solid #3B82F6;
+    padding: 24px;
+    border-radius: 0 12px 12px 0;
+}
+
+.feedbackBox h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 12px;
+}
+
+.feedbackBox p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #334155;
+}
+
+.reward {
+    margin-bottom: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #FFF7ED;
+    color: #EA580C;
+    font-weight: 700;
+    border-radius: 9999px;
+    font-size: 1.1rem;
+}
+
+.quizButton {
+    width: 100%;
+    height: 56px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    background-color: #0F172A;
+    color: white;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.quizButton:hover {
+    background-color: #1E293B;
+    transform: translateY(-1px);
+}
+
+.homeButton {
+    width: 100%;
+    height: 56px;
+    font-size: 1rem;
+    color: #64748B;
+}
+
+.homeButton:hover {
+    color: #1E293B;
+    background-color: #F1F5F9;
+}

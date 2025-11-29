@@ -1,0 +1,39 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import styles from './Header.module.css';
+
+export const Header = () => {
+    const pathname = usePathname();
+
+    // Hide header on auth pages
+    if (pathname === '/login' || pathname === '/signup') return null;
+
+    return (
+        <header className={styles.header}>
+            <div className={styles.container}>
+                <Link href="/" className={styles.logo}>
+                    전지적 독자 시점
+                </Link>
+                <nav className={styles.nav}>
+                    <Link href="/" className={`${styles.link} ${pathname === '/' ? styles.active : ''}`}>
+                        홈
+                    </Link>
+                    <Link href="/library" className={`${styles.link} ${pathname === '/library' ? styles.active : ''}`}>
+                        나의 서재
+                    </Link>
+                    <Link href="/personality" className={`${styles.link} ${pathname === '/personality' ? styles.active : ''}`}>
+                        성향
+                    </Link>
+                    <Link href="/character" className={`${styles.link} ${pathname === '/character' ? styles.active : ''}`}>
+                        캐릭터
+                    </Link>
+                    <Link href="/search" className={styles.writeButton}>
+                        독후감 작성하기
+                    </Link>
+                </nav>
+            </div>
+        </header >
+    );
+};

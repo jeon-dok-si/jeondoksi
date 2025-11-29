@@ -1,0 +1,405 @@
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    min-height: 100vh;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #64748B;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* Bento Grid Layout */
+.bentoGrid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 24px;
+    margin-bottom: 60px;
+}
+
+@media (max-width: 900px) {
+    .bentoGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Common Card Style */
+.card {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #F1F5F9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    border-color: #E2E8F0;
+    transform: translateY(-2px);
+}
+
+/* Profile Card (Left Column) */
+.profileCard {
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative background blur for profile */
+.profileCard::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.profileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.greeting {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #1E293B;
+    margin-bottom: 12px;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.subGreeting {
+    color: #64748B;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.levelBadge {
+    background: #DCFCE7;
+    color: #166534;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.points {
+    background: #FEF3C7;
+    color: #B45309;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 16px;
+    display: inline-block;
+}
+
+.statsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 32px;
+    border-top: 1px solid #F1F5F9;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.statLabel {
+    width: 60px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.statTrack {
+    flex: 1;
+    height: 12px;
+    background: #F1F5F9;
+    border-radius: 9999px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.statFill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logic {
+    background: #3B82F6;
+}
+
+.emotion {
+    background: #EC4899;
+}
+
+.action {
+    background: #F59E0B;
+}
+
+.statValue {
+    width: 30px;
+    text-align: right;
+    font-weight: 700;
+    color: #0F172A;
+    font-size: 0.95rem;
+}
+
+/* Right Column */
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Character Card */
+.characterCard {
+    flex: 1;
+    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    cursor: pointer;
+    border: 1px solid #E2E8F0;
+}
+
+.characterStage {
+    width: 180px;
+    height: 220px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.characterCard:hover .characterStage {
+    transform: scale(1.05);
+}
+
+.charLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
+}
+
+.emptyChar {
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    color: #CBD5E1;
+    border: 3px dashed #E2E8F0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    margin: 0 auto;
+    /* Center horizontally if parent is wider */
+}
+
+.customizeLabel {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0F172A;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.characterCard:hover .customizeLabel {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Action Card (Write Report) */
+.actionCard {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    color: white;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.actionCard::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05));
+    pointer-events: none;
+}
+
+.actionCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+.actionText h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+}
+
+.actionText p {
+    color: #94A3B8;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.actionIcon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.actionCard:hover .actionIcon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+/* Recommendations */
+.recSection {
+    margin-top: 48px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0F172A;
+    letter-spacing: -0.02em;
+}
+
+.refreshButton {
+    background: white;
+    border: 1px solid #E2E8F0;
+    color: #64748B;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.refreshButton:hover {
+    background: #F8FAFC;
+    color: #0F172A;
+    border-color: #CBD5E1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.recGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.bookCard {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #F1F5F9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.bookCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    border-color: #CBD5E1;
+}
+
+.bookCover {
+    width: 100%;
+    aspect-ratio: 1/1.5;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.bookCard:hover .bookCover {
+    transform: scale(1.02);
+}
+
+.bookTitle {
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bookAuthor {
+    color: #64748B;
+    font-size: 0.85rem;
+    margin-top: auto;
+}

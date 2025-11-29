@@ -1,0 +1,19 @@
+.card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xl);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: var(--transition-normal);
+}
+
+/* Optional: Add hover effect for interactive cards */
+.card:hover {
+    /* Only apply hover effect if it's meant to be interactive. 
+     Since this is a generic card, we might not want this everywhere.
+     But for a premium feel, a subtle lift on hover is nice if it's clickable.
+     We'll leave it subtle or rely on parent to add a specific class.
+  */
+}

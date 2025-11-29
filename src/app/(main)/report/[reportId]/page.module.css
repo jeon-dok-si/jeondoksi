@@ -1,0 +1,101 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.headerCard {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+}
+
+.thumbnail {
+    width: 120px;
+    height: 174px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bookInfo {
+    flex: 1;
+}
+
+.bookTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.date {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.scores {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.scoreItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #F8FAFC;
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+    min-width: 80px;
+}
+
+.scoreItem span:first-child {
+    font-size: 0.85rem;
+    color: #64748B;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.scoreItem span:last-child {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.contentCard {
+    padding: 3rem;
+    min-height: 400px;
+}
+
+.contentTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #444;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.backButton {
+    margin-bottom: 1rem;
+}

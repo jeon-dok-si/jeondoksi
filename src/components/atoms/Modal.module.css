@@ -1,0 +1,144 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+    background: white;
+    padding: 32px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.iconWrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.iconWrapper.success {
+    background: #ECFDF5;
+    color: #10B981;
+}
+
+.iconWrapper.error {
+    background: #FEF2F2;
+    color: #EF4444;
+}
+
+.iconWrapper.info {
+    background: #EFF6FF;
+    color: #3B82F6;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 8px;
+}
+
+.message {
+    font-size: 1rem;
+    color: #64748B;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    white-space: pre-wrap;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button.success {
+    background: #10B981;
+    color: white;
+}
+
+.button.success:hover {
+    background: #059669;
+}
+
+.button.error {
+    background: #EF4444;
+    color: white;
+}
+
+.button.error:hover {
+    background: #DC2626;
+}
+
+.button.info {
+    background: #3B82F6;
+    color: white;
+}
+
+.button.info:hover {
+    background: #2563EB;
+}
+
+.button.cancel {
+    background: #F1F5F9;
+    color: #64748B;
+}
+
+.button.cancel:hover {
+    background: #E2E8F0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

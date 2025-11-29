@@ -1,0 +1,308 @@
+.container {
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
+
+.gachaSection {
+    text-align: center;
+    padding: 60px 40px;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #1E293B, #0F172A);
+    color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background decoration */
+.gachaSection::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 60%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+}
+
+.gachaBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.boxImage {
+    font-size: 6rem;
+    filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.5));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+}
+
+.gachaButton {
+    min-width: 240px;
+    height: 56px;
+    font-size: 1.1rem;
+    background: var(--color-secondary);
+    border: none;
+}
+
+.gachaButton:hover {
+    background: var(--color-secondary-dark);
+}
+
+.inventorySection {
+    margin-top: 48px;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subtitle::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 28px;
+    background: var(--color-primary);
+    border-radius: 2px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.itemCard {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid transparent;
+    background: white;
+    transition: all 0.2s;
+}
+
+.itemCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Rarity Borders & Badges */
+.common {
+    border-color: #E2E8F0;
+}
+
+.rare {
+    border-color: #3B82F6;
+    background: #EFF6FF;
+}
+
+.epic {
+    border-color: #A855F7;
+    background: #FAF5FF;
+}
+
+.itemImage {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    padding: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.itemImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.itemInfo {
+    text-align: center;
+}
+
+.itemName {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.itemRarity {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.common .itemRarity {
+    color: #64748B;
+    background: #F1F5F9;
+}
+
+.rare .itemRarity {
+    color: #2563EB;
+    background: #DBEAFE;
+}
+
+.epic .itemRarity {
+    color: #9333EA;
+    background: #F3E8FF;
+}
+
+.equipButton {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 8px;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    width: 340px;
+    padding: 40px;
+    text-align: center;
+    background: white;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.shakingBox {
+    font-size: 6rem;
+    animation: shake 0.5s infinite;
+}
+
+.resultContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.resultTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+.resultImage {
+    width: 160px;
+    height: 160px;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    background: white;
+    border: 4px solid transparent;
+    box-shadow: var(--shadow-lg);
+}
+
+.resultImage.common {
+    border-color: #E2E8F0;
+}
+
+.resultImage.rare {
+    border-color: #3B82F6;
+}
+
+.resultImage.epic {
+    border-color: #A855F7;
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+}
+
+.resultImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.resultName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.resultRarity {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}

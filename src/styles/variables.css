@@ -1,0 +1,59 @@
+:root {
+  /* Brand Colors - More Premium & Vibrant */
+  --color-primary: #10B981;
+  /* Emerald 500: Main Green */
+  --color-primary-dark: #059669;
+  /* Emerald 600: Hover */
+  --color-primary-light: #D1FAE5;
+  /* Emerald 100: Backgrounds */
+
+  --color-secondary: #F59E0B;
+  /* Amber 500: Gold/Reward */
+  --color-secondary-dark: #D97706;
+  /* Amber 600 */
+  --color-secondary-light: #FEF3C7;
+  /* Amber 100 */
+
+  --color-accent: #6366F1;
+  /* Indigo 500: Accent/Links */
+
+  /* Backgrounds */
+  --bg-main: #F8FAFC;
+  /* Slate 50: Clean neutral background */
+  --bg-card: rgba(255, 255, 255, 0.7);
+  /* Glassmorphism base */
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+
+  /* Text */
+  --text-primary: #0F172A;
+  /* Slate 900: Deep dark for readability */
+  --text-secondary: #475569;
+  /* Slate 600: Softer secondary */
+  --text-tertiary: #94A3B8;
+  /* Slate 400: Placeholders/Disabled */
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows - Soft & Deep */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --shadow-glow: 0 0 15px rgba(16, 185, 129, 0.3);
+  /* Green glow */
+
+  /* Animations */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
