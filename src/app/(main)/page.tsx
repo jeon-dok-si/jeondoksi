@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
-import { User, Book } from '@/types';
+import { User, Book, Character } from '@/types';
 import styles from './page.module.css';
 import LandingPage from '@/components/templates/LandingPage';
 
@@ -11,18 +11,32 @@ export default function HomePage() {
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [recommendations, setRecommendations] = useState<Book[]>([]);
+    const [mainCharacter, setMainCharacter] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isRecLoading, setIsRecLoading] = useState(false);
     const [showLanding, setShowLanding] = useState(false);
 
     const fetchData = async () => {
         try {
-            const [userRes, recRes] = await Promise.all([
+            const [userRes, recRes, charRes] = await Promise.all([
                 api.get('/api/v1/users/me'),
                 api.get('/api/v1/recommendations'),
+                api.get('/api/v1/characters'),
             ]);
             setUser(userRes.data.data);
             setRecommendations(recRes.data.data);
+
+            // Determine Main Character
+            // Determine Main Character
+            const characters: Character[] = charRes.data.data;
+            const equippedChar = characters.find(c => c.isEquipped) || characters[0];
+
+            if (equippedChar) {
+                setMainCharacter(equippedChar.imageUrl);
+            } else {
+                setMainCharacter("https://jeondoksi-files-20251127.s3.ap-southeast-2.amazonaws.com/basic_character.png");
+            }
+
         } catch (err: any) {
             if (err.response?.status === 401 || err.response?.status === 403) {
                 localStorage.removeItem('accessToken');
@@ -146,14 +160,13 @@ export default function HomePage() {
                         onClick={() => router.push('/character')}
                     >
                         <div className={styles.characterStage}>
-                            {user.character?.bodyUrl && <img src={user.character.bodyUrl} alt="Body" className={styles.charLayer} />}
-                            {user.character?.headUrl && <img src={user.character.headUrl} alt="Head" className={styles.charLayer} />}
-                            {user.character?.faceUrl && <img src={user.character.faceUrl} alt="Face" className={styles.charLayer} />}
-                            {!user.character?.bodyUrl && !user.character?.headUrl && !user.character?.faceUrl && (
+                            {mainCharacter ? (
+                                <img src={mainCharacter} alt="Main Character" className={styles.charLayer} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            ) : (
                                 <div className={styles.emptyChar}>?</div>
                             )}
                         </div>
-                        <div className={styles.customizeLabel}>꾸미기 🎨</div>
+                        <div className={styles.customizeLabel}>캐릭터 관리 ⚙️</div>
                     </div>
 
                     <div

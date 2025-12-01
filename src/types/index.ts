@@ -1,9 +1,18 @@
+export interface Character {
+    characterId: number;
+    name: string;
+    rarity: 'COMMON' | 'RARE' | 'EPIC' | 'UNIQUE';
+    level: number;
+    currentXp: number;
+    requiredXp: number;
+    imageUrl: string;
+    isEquipped: boolean;
+}
+
 export interface User {
     userId: number;
     email: string;
     nickname: string;
-    level: number;
-    currentXp: number;
     point: number;
     stats: {
         logic: number;
@@ -13,47 +22,6 @@ export interface User {
         average: number;
     };
     dominantType: string;
-    character: {
-        headUrl: string | null;
-        faceUrl: string | null;
-        bodyUrl: string | null;
-    };
-}
-
-export interface Book {
-    isbn: string;
-    title: string;
-    author: string;
-    thumbnail: string;
-    description: string;
-}
-
-export interface Question {
-    questionNo: number;
-    questionId?: number;
-    type: 'MULTIPLE' | 'OX' | 'SHORT';
-    question: string;
-    options: string[];
-    optionsJson?: string;
-    answer: string;
-}
-
-export interface Quiz {
-    quizId: number;
-    questions: Question[];
-}
-
-export interface Item {
-    itemId: number;
-    name: string;
-    category: 'HEAD' | 'FACE' | 'BODY';
-    rarity: 'COMMON' | 'RARE' | 'EPIC';
-    imageUrl: string;
-}
-
-export interface InventoryItem extends Item {
-    invenId: number;
-    isEquipped: boolean;
 }
 
 export interface Report {

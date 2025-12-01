@@ -1,14 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './Header.module.css';
 
 export const Header = () => {
     const pathname = usePathname();
+    const router = useRouter();
 
     // Hide header on auth pages
     if (pathname === '/login' || pathname === '/signup') return null;
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        router.push('/login');
+    };
 
     return (
         <header className={styles.header}>
@@ -29,9 +35,15 @@ export const Header = () => {
                     <Link href="/character" className={`${styles.link} ${pathname === '/character' ? styles.active : ''}`}>
                         캐릭터
                     </Link>
+                    <Link href="/shop" className={`${styles.link} ${pathname === '/shop' ? styles.active : ''}`}>
+                        상점
+                    </Link>
                     <Link href="/search" className={styles.writeButton}>
                         독후감 작성하기
                     </Link>
+                    <button onClick={handleLogout} className={styles.logoutButton}>
+                        로그아웃
+                    </button>
                 </nav>
             </div>
         </header >

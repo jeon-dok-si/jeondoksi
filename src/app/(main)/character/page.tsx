@@ -2,37 +2,25 @@
 
 import React, { useState, useEffect } from 'react';
 import api from '@/lib/axios';
-import { User, InventoryItem, Item } from '@/types';
-import { Button } from '@/components/atoms/Button';
+import { User, Character } from '@/types';
 import { Card } from '@/components/molecules/Card';
+import { useModal } from '@/contexts/ModalContext';
 import styles from './page.module.css';
 
-type Tab = 'INVENTORY' | 'SHOP';
-type Category = 'ALL' | 'HEAD' | 'FACE' | 'BODY';
-
-import { useModal } from '@/contexts/ModalContext';
-
 export default function CharacterPage() {
-    const { openModal, openConfirm } = useModal();
     const [user, setUser] = useState<User | null>(null);
-    const [inventory, setInventory] = useState<InventoryItem[]>([]);
-    const [activeTab, setActiveTab] = useState<Tab>('INVENTORY');
-    const [activeCategory, setActiveCategory] = useState<Category>('ALL');
+    const [characters, setCharacters] = useState<Character[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    // Gacha State
-    const [gachaResult, setGachaResult] = useState<Item | null>(null);
-    const [isGachaLoading, setIsGachaLoading] = useState(false);
-    const [showGachaModal, setShowGachaModal] = useState(false);
+    const { openModal } = useModal();
 
     const fetchData = async () => {
         try {
-            const [userRes, invenRes] = await Promise.all([
+            const [userRes, charRes] = await Promise.all([
                 api.get('/api/v1/users/me'),
-                api.get('/api/v1/gamification/inventory'),
+                api.get('/api/v1/characters'),
             ]);
             setUser(userRes.data.data);
-            setInventory(invenRes.data.data);
+            setCharacters(charRes.data.data);
         } catch (err) {
             console.error(err);
         } finally {
@@ -44,188 +32,112 @@ export default function CharacterPage() {
         fetchData();
     }, []);
 
-    const handleEquip = async (invenId: number) => {
+    const handleEquip = async (characterId: number) => {
         try {
-            await api.post(`/api/v1/gamification/inventory/${invenId}/equip`);
-            fetchData(); // Refresh user and inventory to show equipped state
-        } catch (err) {
+            await api.post(`/api/v1/characters/${characterId}/equip`);
+            // Refresh data to show updated equipped status
+            fetchData();
+            openModal({
+                title: '대표 캐릭터 설정 완료',
+                message: '대표 캐릭터가 변경되었습니다.',
+                type: 'success'
+            });
+        } catch (err: any) {
+            console.error('Failed to equip character', err);
             openModal({
                 title: '오류 발생',
-                message: '장착 중 오류가 발생했습니다.',
+                message: err.response?.data?.message || '대표 캐릭터 설정에 실패했습니다.',
                 type: 'error'
             });
         }
     };
-
-    const handleGacha = async () => {
-        if (!user || user.point < 100) {
-            openModal({
-                title: '포인트 부족',
-                message: '포인트가 부족합니다.',
-                type: 'error'
-            });
-            return;
-        }
-        openConfirm({
-            title: '뽑기 확인',
-            message: '100 포인트를 사용하여 뽑기를 진행하시겠습니까?',
-            type: 'info',
-            onConfirm: async () => {
-                setIsGachaLoading(true);
-                setShowGachaModal(true);
-
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 2000)); // Animation delay
-                    const res = await api.post('/api/v1/gamification/gacha');
-                    setGachaResult(res.data.data);
-                    fetchData(); // Refresh points and inventory
-                } catch (err: any) {
-                    openModal({
-                        title: '오류 발생',
-                        message: err.response?.data?.message || '뽑기 중 오류가 발생했습니다.',
-                        type: 'error'
-                    });
-                    setShowGachaModal(false);
-                } finally {
-                    setIsGachaLoading(false);
-                }
-            }
-        });
-    };
-
-    const filteredInventory = inventory.filter(item =>
-        activeCategory === 'ALL' || item.category === activeCategory
-    );
 
     if (isLoading) return <div className={styles.loading}>로딩 중...</div>;
     if (!user) return null;
 
+    // Fallback: If no character is equipped, use the first one as main
+    const equippedCharacter = characters.find(c => c.isEquipped) || characters[0];
+
     return (
         <div className={styles.container}>
-            {/* Character Preview Section */}
-            <section className={styles.previewSection}>
-                <div className={styles.characterContainer}>
-                    {user.character?.bodyUrl && <img src={user.character.bodyUrl} alt="Body" className={styles.charLayer} />}
-                    {user.character?.headUrl && <img src={user.character.headUrl} alt="Head" className={styles.charLayer} />}
-                    {user.character?.faceUrl && <img src={user.character.faceUrl} alt="Face" className={styles.charLayer} />}
-                    {!user.character?.bodyUrl && !user.character?.headUrl && !user.character?.faceUrl && (
-                        <div className={styles.emptyChar}>?</div>
-                    )}
-                </div>
-                <div className={styles.userInfo}>
-                    <h2 className={styles.nickname}>{user.nickname}</h2>
-                    <div className={styles.points}>💰 {user.point} P</div>
-                </div>
-            </section>
-
-            {/* Tabs */}
-            <div className={styles.tabs}>
-                <button
-                    className={`${styles.tab} ${activeTab === 'INVENTORY' ? styles.activeTab : ''}`}
-                    onClick={() => setActiveTab('INVENTORY')}
-                >
-                    인벤토리
-                </button>
-                <button
-                    className={`${styles.tab} ${activeTab === 'SHOP' ? styles.activeTab : ''}`}
-                    onClick={() => setActiveTab('SHOP')}
-                >
-                    상점 (뽑기)
-                </button>
-            </div>
-
-            {/* Content Area */}
-            <div className={styles.contentArea}>
-                {activeTab === 'INVENTORY' && (
-                    <>
-                        <div className={styles.categoryFilter}>
-                            {(['ALL', 'HEAD', 'FACE', 'BODY'] as Category[]).map(cat => (
-                                <button
-                                    key={cat}
-                                    className={`${styles.catButton} ${activeCategory === cat ? styles.activeCat : ''}`}
-                                    onClick={() => setActiveCategory(cat)}
-                                >
-                                    {cat === 'ALL' ? '전체' : cat}
-                                </button>
-                            ))}
+            {/* Main Character Dashboard */}
+            {equippedCharacter && (
+                <section className={styles.mainSection}>
+                    <h3 className={styles.sectionTitle}>대표 캐릭터</h3>
+                    <div className={styles.mainCharCard}>
+                        <div className={styles.mainCharImage}>
+                            <img src={equippedCharacter.imageUrl} alt={equippedCharacter.name} />
                         </div>
+                        <div className={styles.mainCharInfo}>
+                            <div className={styles.mainCharHeader}>
+                                <span className={`${styles.itemRarity} ${styles[equippedCharacter.rarity.toLowerCase() + 'Text']}`}>
+                                    {equippedCharacter.rarity}
+                                </span>
+                                <h2 className={styles.mainCharName}>{equippedCharacter.name}</h2>
+                            </div>
 
-                        <div className={styles.grid}>
-                            {filteredInventory.map((item) => (
-                                <Card key={item.invenId} className={`${styles.itemCard} ${styles[item.rarity.toLowerCase()]}`}>
-                                    <div className={styles.itemImage}>
-                                        {item.imageUrl ? (
-                                            <img
-                                                src={item.imageUrl}
-                                                alt={item.name}
-                                                onError={(e) => e.currentTarget.style.display = 'none'}
-                                            />
-                                        ) : (
-                                            <div className={styles.noImage}>No Image</div>
-                                        )}
-                                    </div>
-                                    <div className={styles.itemInfo}>
-                                        <p className={styles.itemName}>{item.name}</p>
-                                        <span className={styles.itemRarity}>{item.rarity}</span>
-                                    </div>
-                                    <Button
-                                        size="sm"
-                                        variant={item.isEquipped ? 'secondary' : 'primary'}
-                                        onClick={() => handleEquip(item.invenId)}
-                                        disabled={item.isEquipped}
-                                        className={styles.equipButton}
-                                    >
-                                        {item.isEquipped ? '장착 중' : '장착'}
-                                    </Button>
-                                </Card>
-                            ))}
-                            {filteredInventory.length === 0 && (
-                                <div className={styles.emptyState}>아이템이 없습니다.</div>
-                            )}
-                        </div>
-                    </>
-                )}
-
-                {activeTab === 'SHOP' && (
-                    <div className={styles.shopContainer}>
-                        <div className={styles.gachaBox}>
-                            <div className={styles.boxImage}>🎁</div>
-                            <h3 className={styles.gachaTitle}>랜덤 아이템 뽑기</h3>
-                            <p className={styles.gachaDesc}>100 포인트를 사용하여<br />희귀한 아이템을 획득하세요!</p>
-                            <Button onClick={handleGacha} size="lg" className={styles.gachaButton}>
-                                1회 뽑기 (100 P)
-                            </Button>
+                            <div className={styles.levelContainer}>
+                                <div className={styles.levelLabel}>
+                                    <span>Lv. {equippedCharacter.level}</span>
+                                    <span>{equippedCharacter.currentXp} / {equippedCharacter.requiredXp} XP</span>
+                                </div>
+                                <div className={styles.progressBar}>
+                                    <div
+                                        className={styles.progressFill}
+                                        style={{ width: `${Math.min((equippedCharacter.currentXp / equippedCharacter.requiredXp) * 100, 100)}%` }}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                )}
-            </div>
-
-            {/* Gacha Modal */}
-            {showGachaModal && (
-                <div className={styles.modalOverlay}>
-                    <Card className={styles.modalContent}>
-                        {isGachaLoading ? (
-                            <div className={styles.shakingBox}>📦</div>
-                        ) : (
-                            gachaResult && (
-                                <div className={styles.resultContent}>
-                                    <h2 className={styles.resultTitle}>축하합니다!</h2>
-                                    <div className={`${styles.resultImage} ${styles[gachaResult.rarity.toLowerCase()]}`}>
-                                        <img
-                                            src={gachaResult.imageUrl}
-                                            alt={gachaResult.name}
-                                            onError={(e) => e.currentTarget.style.display = 'none'}
-                                        />
-                                    </div>
-                                    <p className={styles.resultName}>{gachaResult.name}</p>
-                                    <p className={styles.resultRarity}>{gachaResult.rarity}</p>
-                                    <Button onClick={() => setShowGachaModal(false)}>확인</Button>
-                                </div>
-                            )
-                        )}
-                    </Card>
-                </div>
+                </section>
             )}
+
+            {/* Character List Section */}
+            <div className={styles.contentArea}>
+                <h3 className={styles.sectionTitle}>다른 캐릭터</h3>
+                <div className={styles.grid}>
+                    {characters.filter(c => c.characterId !== equippedCharacter?.characterId).map((char) => (
+                        <Card
+                            key={char.characterId}
+                            className={`${styles.itemCard} ${styles[char.rarity.toLowerCase()]}`}
+                        >
+                            <div className={styles.itemImage}>
+                                <img
+                                    src={char.imageUrl}
+                                    alt={char.name}
+                                    onError={(e) => e.currentTarget.style.display = 'none'}
+                                />
+                            </div>
+                            <div className={styles.itemInfo}>
+                                <div className={styles.infoHeader}>
+                                    <span className={`${styles.itemRarity} ${styles[char.rarity.toLowerCase() + 'Text']}`}>{char.rarity}</span>
+                                    <span className={styles.levelInfo}>Lv. {char.level}</span>
+                                </div>
+                                <p className={styles.itemName}>{char.name}</p>
+
+                                {/* Mini Progress Bar for Grid */}
+                                <div className={styles.miniProgressBar}>
+                                    <div
+                                        className={styles.miniProgressFill}
+                                        style={{ width: `${Math.min((char.currentXp / char.requiredXp) * 100, 100)}%` }}
+                                    />
+                                </div>
+
+                                <button
+                                    className={styles.equipButton}
+                                    onClick={() => handleEquip(char.characterId)}
+                                >
+                                    대표 캐릭터 설정
+                                </button>
+                            </div>
+                        </Card>
+                    ))}
+                    {characters.filter(c => c.characterId !== equippedCharacter?.characterId).length === 0 && (
+                        <div className={styles.emptyState}>교체할 다른 캐릭터가 없습니다.</div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

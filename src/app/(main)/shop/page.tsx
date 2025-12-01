@@ -1,60 +1,68 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import api from '@/lib/axios';
-import { InventoryItem, Item } from '@/types';
+import { Character } from '@/types';
 import { Button } from '@/components/atoms/Button';
 import { Card } from '@/components/molecules/Card';
+import { GachaReveal } from '@/components/molecules/GachaReveal';
 import styles from './page.module.css';
 
 import { useModal } from '@/contexts/ModalContext';
 
 export default function ShopPage() {
     const { openModal, openConfirm } = useModal();
-    const [inventory, setInventory] = useState<InventoryItem[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [gachaResult, setGachaResult] = useState<Item | null>(null);
+    const [gachaResult, setGachaResult] = useState<Character | null>(null);
     const [isGachaLoading, setIsGachaLoading] = useState(false);
-    const [showGachaModal, setShowGachaModal] = useState(false);
+    const [showGachaReveal, setShowGachaReveal] = useState(false);
+    const [userPoint, setUserPoint] = useState<number>(0);
 
-    const fetchInventory = async () => {
+    React.useEffect(() => {
+        fetchUserPoint();
+    }, []);
+
+    const fetchUserPoint = async () => {
         try {
-            const res = await api.get('/api/v1/gamification/inventory');
-            setInventory(res.data.data);
+            const res = await api.get('/api/v1/users/me');
+            setUserPoint(res.data.data.point);
         } catch (err) {
-            console.error(err);
-        } finally {
-            setIsLoading(false);
+            console.error('Failed to fetch user point', err);
         }
     };
 
-    useEffect(() => {
-        fetchInventory();
-    }, []);
-
     const handleGacha = async () => {
+        if (userPoint < 100) {
+            openModal({
+                title: '포인트 부족',
+                message: '소환을 위한 포인트가 부족합니다. (필요: 100 P)',
+                type: 'error'
+            });
+            return;
+        }
+
         openConfirm({
-            title: '뽑기 확인',
-            message: '100 포인트를 사용하여 뽑기를 진행하시겠습니까?',
+            title: '캐릭터 소환',
+            message: '100 포인트를 사용하여 새로운 동료를 소환하시겠습니까?',
             type: 'info',
             onConfirm: async () => {
                 setIsGachaLoading(true);
-                setShowGachaModal(true);
+                setShowGachaReveal(true);
+                setGachaResult(null);
 
                 try {
-                    // Simulate animation delay
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-
-                    const res = await api.post('/api/v1/gamification/gacha');
-                    setGachaResult(res.data.data);
-                    fetchInventory(); // Refresh inventory
+                    const res = await api.post('/api/v1/characters/draw');
+                    // Delay setting the result slightly to allow the chest animation to start
+                    setTimeout(() => {
+                        setGachaResult(res.data.data);
+                        fetchUserPoint(); // Refresh points after draw
+                    }, 1000);
                 } catch (err: any) {
                     openModal({
-                        title: '오류 발생',
-                        message: err.response?.data?.message || '뽑기 중 오류가 발생했습니다.',
+                        title: '소환 실패',
+                        message: err.response?.data?.message || '소환 중 오류가 발생했습니다.',
                         type: 'error'
                     });
-                    setShowGachaModal(false);
+                    setShowGachaReveal(false);
                 } finally {
                     setIsGachaLoading(false);
                 }
@@ -62,84 +70,47 @@ export default function ShopPage() {
         });
     };
 
-    const handleEquip = async (invenId: number) => {
-        try {
-            await api.post(`/api/v1/gamification/inventory/${invenId}/equip`);
-            // Optimistic update or refresh
-            fetchInventory();
-        } catch (err) {
-            openModal({
-                title: '오류 발생',
-                message: '장착 중 오류가 발생했습니다.',
-                type: 'error'
-            });
-        }
+    const handleCloseReveal = () => {
+        setShowGachaReveal(false);
+        setGachaResult(null);
     };
 
     return (
         <div className={styles.container}>
-            <Card className={styles.gachaSection}>
-                <h1 className={styles.title}>상점</h1>
-                <div className={styles.gachaBox}>
-                    <div className={styles.boxImage}>🎁</div>
-                    <p className={styles.price}>1회 뽑기 - 100 P</p>
-                    <Button onClick={handleGacha} size="lg" className={styles.gachaButton}>
-                        뽑기
-                    </Button>
-                </div>
-            </Card>
-
-            <div className={styles.inventorySection}>
-                <h2 className={styles.subtitle}>내 인벤토리</h2>
-                {isLoading ? (
-                    <div>로딩 중...</div>
-                ) : (
-                    <div className={styles.grid}>
-                        {inventory.map((item) => (
-                            <Card key={item.invenId} className={`${styles.itemCard} ${styles[item.rarity.toLowerCase()]}`}>
-                                <div className={styles.itemImage}>
-                                    {/* Placeholder for item image */}
-                                    <img src={item.imageUrl} alt={item.name} />
-                                </div>
-                                <div className={styles.itemInfo}>
-                                    <p className={styles.itemName}>{item.name}</p>
-                                    <p className={styles.itemRarity}>{item.rarity}</p>
-                                </div>
-                                <Button
-                                    size="sm"
-                                    variant={item.isEquipped ? 'secondary' : 'primary'}
-                                    onClick={() => handleEquip(item.invenId)}
-                                    disabled={item.isEquipped}
-                                    className={styles.equipButton}
-                                >
-                                    {item.isEquipped ? '장착 중' : '장착하기'}
-                                </Button>
-                            </Card>
-                        ))}
-                    </div>
-                )}
+            <div className={styles.pointDisplay}>
+                <span className={styles.pointLabel}>보유 포인트</span>
+                <span className={styles.pointValue}>{userPoint.toLocaleString()} P</span>
             </div>
 
-            {showGachaModal && (
-                <div className={styles.modalOverlay}>
-                    <Card className={styles.modalContent}>
-                        {isGachaLoading ? (
-                            <div className={styles.shakingBox}>📦</div>
-                        ) : (
-                            gachaResult && (
-                                <div className={styles.resultContent}>
-                                    <h2 className={styles.resultTitle}>축하합니다!</h2>
-                                    <div className={`${styles.resultImage} ${styles[gachaResult.rarity.toLowerCase()]}`}>
-                                        <img src={gachaResult.imageUrl} alt={gachaResult.name} />
-                                    </div>
-                                    <p className={styles.resultName}>{gachaResult.name}</p>
-                                    <p className={styles.resultRarity}>{gachaResult.rarity}</p>
-                                    <Button onClick={() => setShowGachaModal(false)}>확인</Button>
-                                </div>
-                            )
-                        )}
-                    </Card>
+            <div className={styles.heroSection}>
+                <h1 className={styles.title}>신비한 소환소</h1>
+                <p className={styles.subtitle}>
+                    운명의 동료가 당신을 기다리고 있습니다.<br />
+                    강력한 힘을 가진 캐릭터를 소환해보세요!
+                </p>
+
+                <div className={styles.summonCircle}>
+                    <div className={styles.circleInner}>
+                        <div className={styles.chestIcon}>🎁</div>
+                    </div>
                 </div>
+
+                <div className={styles.actionArea}>
+                    <div className={styles.priceTag}>
+                        <span className={styles.priceLabel}>소환 비용</span>
+                        <span className={styles.priceValue}>100 P</span>
+                    </div>
+                    <Button onClick={handleGacha} size="lg" className={styles.summonButton}>
+                        1회 소환하기
+                    </Button>
+                </div>
+            </div>
+
+            {showGachaReveal && gachaResult && (
+                <GachaReveal
+                    character={gachaResult}
+                    onClose={handleCloseReveal}
+                />
             )}
         </div>
     );
