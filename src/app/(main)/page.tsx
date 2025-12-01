@@ -110,9 +110,7 @@ export default function HomePage() {
                                 <h1 className={styles.greeting}>반가워요, {user.nickname}님!</h1>
                                 <p className={styles.subGreeting}>오늘도 마음의 양식을 쌓아볼까요?</p>
                             </div>
-                            <div className={styles.levelBadge}>
-                                Lv.{user.level} {personalityType}
-                            </div>
+
                         </div>
                         <div className={styles.points}>
                             💰 {user.point} P

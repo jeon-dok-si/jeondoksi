@@ -9,6 +9,31 @@ export interface Character {
     isEquipped: boolean;
 }
 
+export interface Book {
+    isbn: string;
+    title: string;
+    author: string;
+    thumbnail: string;
+    description?: string;
+    keywords?: string;
+}
+
+
+
+export interface Question {
+    questionNo: number;
+    questionId: number;
+    question: string;
+    type: 'MULTIPLE' | 'OX' | 'SHORT';
+    options?: string[];
+    optionsJson?: string;
+}
+
+export interface Quiz {
+    quizId: number;
+    questions: Question[];
+}
+
 export interface User {
     userId: number;
     email: string;
