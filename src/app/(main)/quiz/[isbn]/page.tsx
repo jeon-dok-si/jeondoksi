@@ -136,11 +136,7 @@ export default function QuizPage() {
                         <Button onClick={() => router.push('/')} className={styles.homeButton}>
                             홈으로
                         </Button>
-                        {!isPassed && (
-                            <Button variant="secondary" onClick={() => window.location.reload()}>
-                                다시 풀기
-                            </Button>
-                        )}
+
                     </div>
                 </Card>
             </div>

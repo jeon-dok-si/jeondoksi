@@ -77,11 +77,6 @@ export default function ShopPage() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.pointDisplay}>
-                <span className={styles.pointLabel}>보유 포인트</span>
-                <span className={styles.pointValue}>{userPoint.toLocaleString()} P</span>
-            </div>
-
             <div className={styles.heroSection}>
                 <h1 className={styles.title}>신비한 소환소</h1>
                 <p className={styles.subtitle}>
@@ -99,6 +94,7 @@ export default function ShopPage() {
                     <div className={styles.priceTag}>
                         <span className={styles.priceLabel}>소환 비용</span>
                         <span className={styles.priceValue}>100 P</span>
+                        <span className={styles.currentPoint}>(보유: {userPoint.toLocaleString()} P)</span>
                     </div>
                     <Button onClick={handleGacha} size="lg" className={styles.summonButton}>
                         1회 소환하기
