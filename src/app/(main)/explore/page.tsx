@@ -95,7 +95,6 @@ export default function ExplorePage() {
 
             {isLoading && books.length === 0 ? (
                 <div className={styles.loadingContainer}>
-                    <div className={styles.spinner}>📚</div>
                     <p>책을 불러오고 있습니다...</p>
                 </div>
             ) : (
