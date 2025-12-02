@@ -253,6 +253,44 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+.xpContainer {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+}
+
+.levelBadge {
+    background: #3B82F6;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.xpTrack {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.xpFill {
+    height: 100%;
+    background: #10B981;
+    border-radius: 9999px;
+    transition: width 0.5s ease;
+}
+
 /* Action Card (Write Report) */
 .actionCard {
     background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);

@@ -11,7 +11,7 @@ export default function HomePage() {
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [recommendations, setRecommendations] = useState<Book[]>([]);
-    const [mainCharacter, setMainCharacter] = useState<string | null>(null);
+    const [mainCharacter, setMainCharacter] = useState<Character | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isRecLoading, setIsRecLoading] = useState(false);
     const [showLanding, setShowLanding] = useState(false);
@@ -32,9 +32,9 @@ export default function HomePage() {
             const equippedChar = characters.find(c => c.isEquipped) || characters[0];
 
             if (equippedChar) {
-                setMainCharacter(equippedChar.imageUrl);
+                setMainCharacter(equippedChar);
             } else {
-                setMainCharacter("https://jeondoksi-files-20251127.s3.ap-southeast-2.amazonaws.com/basic_character.png");
+                setMainCharacter(null);
             }
 
         } catch (err: any) {
@@ -159,7 +159,18 @@ export default function HomePage() {
                     >
                         <div className={styles.characterStage}>
                             {mainCharacter ? (
-                                <img src={mainCharacter} alt="Main Character" className={styles.charLayer} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                <>
+                                    <div className={styles.xpContainer}>
+                                        <div className={styles.levelBadge}>Lv. {mainCharacter.level}</div>
+                                        <div className={styles.xpTrack}>
+                                            <div
+                                                className={styles.xpFill}
+                                                style={{ width: `${Math.min((mainCharacter.currentXp / mainCharacter.requiredXp) * 100, 100)}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <img src={mainCharacter.imageUrl} alt={mainCharacter.name} className={styles.charLayer} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                </>
                             ) : (
                                 <div className={styles.emptyChar}>?</div>
                             )}
