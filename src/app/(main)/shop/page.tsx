@@ -91,10 +91,14 @@ export default function ShopPage() {
                 </div>
 
                 <div className={styles.actionArea}>
+                    <div className={styles.balanceDisplay}>
+                        <span className={styles.balanceLabel}>내 포인트</span>
+                        <span className={styles.balanceValue}>{userPoint.toLocaleString()} P</span>
+                    </div>
+
                     <div className={styles.priceTag}>
                         <span className={styles.priceLabel}>소환 비용</span>
                         <span className={styles.priceValue}>100 P</span>
-                        <span className={styles.currentPoint}>(보유: {userPoint.toLocaleString()} P)</span>
                     </div>
                     <Button onClick={handleGacha} size="lg" className={styles.summonButton}>
                         1회 소환하기

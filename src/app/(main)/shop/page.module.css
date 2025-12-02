@@ -118,6 +118,26 @@
     width: 100%;
 }
 
+.balanceDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.balanceLabel {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.balanceValue {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
 .priceTag {
     display: flex;
     align-items: center;
@@ -140,9 +160,20 @@
 }
 
 .currentPoint {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    margin-left: 5px;
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    margin-left: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.currentPoint::before {
+    content: '💰';
+    font-size: 0.8rem;
 }
 
 .summonButton {
