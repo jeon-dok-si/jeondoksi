@@ -26,6 +26,9 @@ export const Header = () => {
                     <Link href="/" className={`${styles.link} ${pathname === '/' ? styles.active : ''}`}>
                         홈
                     </Link>
+                    <Link href="/explore" className={`${styles.link} ${pathname === '/explore' ? styles.active : ''}`}>
+                        책 탐험
+                    </Link>
                     <Link href="/library" className={`${styles.link} ${pathname === '/library' ? styles.active : ''}`}>
                         나의 서재
                     </Link>

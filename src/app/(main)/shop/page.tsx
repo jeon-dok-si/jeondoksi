@@ -81,7 +81,7 @@ export default function ShopPage() {
                 <h1 className={styles.title}>신비한 소환소</h1>
                 <p className={styles.subtitle}>
                     운명의 동료가 당신을 기다리고 있습니다.<br />
-                    강력한 힘을 가진 캐릭터를 소환해보세요!
+                    나만의 캐릭터를 소환해보세요!
                 </p>
 
                 <div className={styles.summonCircle}>
