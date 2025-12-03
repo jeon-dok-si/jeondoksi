@@ -89,3 +89,36 @@ export interface ReportSubmissionResponse {
     };
     createdAt: string;
 }
+
+export interface Guild {
+    id: number;
+    name: string;
+    description: string;
+    maxMembers: number;
+    currentMemberCount: number;
+    isPrivate: boolean;
+    hasPassword: boolean;
+    leaderName: string;
+    joinCode?: string;
+    currentBossId?: number;
+}
+
+export interface Boss {
+    id: number;
+    name: string;
+    description: string;
+    level: number;
+    maxHp: number;
+    currentHp: number;
+    imageUrl: string;
+    isActive: boolean;
+    startAt?: string;
+    endAt?: string;
+}
+
+export interface GuildMember {
+    userId: number;
+    nickname: string;
+    role: 'LEADER' | 'OFFICER' | 'MEMBER';
+    joinedAt: string;
+}

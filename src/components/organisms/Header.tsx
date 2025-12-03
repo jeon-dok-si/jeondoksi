@@ -35,6 +35,12 @@ export const Header = () => {
                     <Link href="/personality" className={`${styles.link} ${pathname === '/personality' ? styles.active : ''}`}>
                         성향
                     </Link>
+                    <Link href="/guilds" className={`${styles.link} ${pathname.startsWith('/guilds') ? styles.active : ''}`}>
+                        길드
+                    </Link>
+                    <Link href="/boss-raid" className={`${styles.link} ${pathname.startsWith('/boss-raid') ? styles.active : ''}`}>
+                        보스 레이드
+                    </Link>
                     <Link href="/character" className={`${styles.link} ${pathname === '/character' ? styles.active : ''}`}>
                         캐릭터
                     </Link>
